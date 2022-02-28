@@ -1,0 +1,23 @@
+<mat-card>
+  <mat-card-content fxLayout="row" fxLayoutAlign="space-between center">
+    <span><strong>Task:</strong></span>
+    <span>Some task text</span>
+    <mat-form-field appearance="outline">
+      <mat-select>
+        <mat-option [value]="'name1'">Name1</mat-option>
+        <mat-option [value]="'name2'">Name2</mat-option>
+        <mat-option [value]="'name3'">Name3</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-select>
+        <mat-option [value]="'new'">New</mat-option>
+        <mat-option [value]="'in_progress'">In progress</mat-option>
+        <mat-option [value]="'completed'">Completed</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="warn">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-card-content>
+</mat-card>
