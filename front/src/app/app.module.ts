@@ -19,6 +19,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { tasksReducer } from './store/tasks.reducer';
+import { TasksEffects } from './store/tasks.effects';
 
 @NgModule({
   declarations: [
@@ -34,8 +36,8 @@ import { MatInputModule } from '@angular/material/input';
     FlexLayoutModule,
     HttpClientModule,
     FormsModule,
-    StoreModule.forRoot({}, {}),
-    EffectsModule.forRoot([]),
+    StoreModule.forRoot({tasks: tasksReducer}, {}),
+    EffectsModule.forRoot([TasksEffects]),
     MatToolbarModule,
     MatCardModule,
     MatFormFieldModule,
@@ -47,4 +49,5 @@ import { MatInputModule } from '@angular/material/input';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

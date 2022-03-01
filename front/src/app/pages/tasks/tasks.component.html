@@ -1,4 +1,1 @@
-<app-task></app-task>
-<app-task></app-task>
-<app-task></app-task>
-<app-task></app-task>
+<app-task *ngFor="let t of tasks | async" [task]="t"></app-task>
