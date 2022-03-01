@@ -9,3 +9,8 @@ export interface ApiTaskData {
   title: string,
   status: string,
 }
+
+export interface TaskData {
+  title: string,
+  user: string,
+}

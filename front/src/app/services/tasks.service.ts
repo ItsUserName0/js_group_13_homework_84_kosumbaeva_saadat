@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { ApiTaskData, Task } from '../models/task.model';
+import { ApiTaskData, Task, TaskData } from '../models/task.model';
 import { ApiUserData, User } from '../models/user.model';
 
 @Injectable({
@@ -24,6 +24,10 @@ export class TasksService {
         });
       })
     );
+  }
+
+  createTask(task: TaskData) {
+    return this.http.post(environment.apiUrl + '/tasks', task);
   }
 
   fetchUsers() {

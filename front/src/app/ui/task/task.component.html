@@ -1,15 +1,15 @@
 <mat-card>
   <mat-card-content fxLayout="row" fxLayoutAlign="space-between center">
     <span><strong>Task:</strong></span>
-    <span>Some task text</span>
+    <span>{{ task.title }}</span>
     <mat-form-field appearance="outline">
       <mat-select [value]="task.user.username">
         <mat-option [value]="''">N/A</mat-option>
-        <mat-option *ngFor="let u of users | async" [value]="u.username">{{ u.username }}</mat-option>
+        <mat-option *ngFor="let u of users" [value]="u.username">{{ u.username }}</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-select>
+      <mat-select [value]="task.status">
         <mat-option [value]="'new'">New</mat-option>
         <mat-option [value]="'in_progress'">In progress</mat-option>
         <mat-option [value]="'completed'">Completed</mat-option>
