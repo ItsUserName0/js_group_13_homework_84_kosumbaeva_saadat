@@ -2,6 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Task } from '../../models/task.model';
 import { User } from '../../models/user.model';
 import { TasksService } from '../../services/tasks.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../store/types';
+import { fetchTasksRequest } from '../../store/tasks.actions';
 
 @Component({
   selector: 'app-task',
@@ -12,7 +15,7 @@ export class TaskComponent implements OnInit {
   @Input() task!: Task;
   @Input() users!: User[];
 
-  constructor(private tasksService: TasksService) {
+  constructor(private tasksService: TasksService, private store: Store<AppState>) {
   }
 
   ngOnInit(): void {
@@ -23,7 +26,7 @@ export class TaskComponent implements OnInit {
       user: userId,
     };
     this.tasksService.editTask(userData, this.task.id).subscribe(() => {
-      this.tasksService.fetchTasks();
+      this.store.dispatch(fetchTasksRequest());
     });
   }
 
@@ -32,7 +35,13 @@ export class TaskComponent implements OnInit {
       status,
     };
     this.tasksService.editTask(statusData, this.task.id).subscribe(() => {
-      this.tasksService.fetchTasks();
+      this.store.dispatch(fetchTasksRequest());
+    });
+  }
+
+  removeTask() {
+    this.tasksService.removeTask(this.task.id).subscribe(() => {
+      this.store.dispatch(fetchTasksRequest());
     });
   }
 }

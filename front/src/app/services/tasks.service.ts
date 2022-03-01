@@ -42,6 +42,10 @@ export class TasksService {
     return this.http.put(environment.apiUrl + '/tasks/' + taskId, taskData);
   }
 
+  removeTask(taskId: string) {
+    return this.http.delete(environment.apiUrl + '/tasks/' + taskId);
+  }
+
   fetchUsers() {
     return this.http.get<ApiUserData[]>(environment.apiUrl + '/users').pipe(
       map(response => {

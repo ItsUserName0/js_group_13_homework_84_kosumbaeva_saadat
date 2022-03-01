@@ -15,7 +15,7 @@
         <mat-option [value]="'completed'">Completed</mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-raised-button color="warn">
+    <button mat-raised-button color="warn" (click)="removeTask()">
       <mat-icon>delete</mat-icon>
     </button>
   </mat-card-content>
