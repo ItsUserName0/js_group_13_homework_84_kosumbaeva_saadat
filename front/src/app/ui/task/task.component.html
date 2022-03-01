@@ -1,21 +1,21 @@
 <mat-card>
   <mat-card-content fxLayout="row" fxLayoutAlign="space-between center">
-    <span><strong>Task:</strong></span>
-    <span>{{ task.title }}</span>
-    <mat-form-field appearance="outline">
+    <span fxFlex="10%"><strong>Task:</strong></span>
+    <span fxFlex="25%">{{ task.title }}</span>
+    <mat-form-field appearance="outline" fxFlex="25%">
       <mat-select [value]="task.user.id" (valueChange)="onUserChange($event)">
         <mat-option [value]="''">N/A</mat-option>
         <mat-option *ngFor="let u of users" [value]="u.id">{{ u.username }}</mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" fxFlex="25%">
       <mat-select [value]="task.status" (valueChange)="onStatusChange($event)">
         <mat-option [value]="'new'">New</mat-option>
         <mat-option [value]="'in_progress'">In progress</mat-option>
         <mat-option [value]="'completed'">Completed</mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-raised-button color="warn" (click)="removeTask()">
+    <button mat-raised-button color="warn" (click)="removeTask()" fxFlex="10%">
       <mat-icon>delete</mat-icon>
     </button>
   </mat-card-content>
