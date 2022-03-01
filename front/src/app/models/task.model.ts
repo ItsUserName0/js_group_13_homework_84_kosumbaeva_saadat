@@ -1,11 +1,11 @@
 export class Task {
-  constructor(public id: string, public user: { username: string }, public title: string, public status: string) {
+  constructor(public id: string, public user: { username: string, id: string }, public title: string, public status: string) {
   }
 }
 
 export interface ApiTaskData {
   _id: string,
-  user: { username: string },
+  user: { username: string, _id: string },
   title: string,
   status: string,
 }

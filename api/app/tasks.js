@@ -37,10 +37,14 @@ router.post('/', async (req, res, next) => {
 router.put('/:id', async (req, res, next) => {
   try {
     let taskData;
-    if (req.body.user) {
+    if (req.body.user === null) {
       taskData = {
         user: req.body.user,
       };
+    } else if (req.body.user) {
+      taskData = {
+        user: req.body.user,
+      }
     } else if (req.body.status) {
       const statuses = ['new', 'in_progress', 'completed'];
       if (!statuses.find(s => s === req.body.status)) {

@@ -18,9 +18,9 @@ export class TasksService {
       map(response => {
         return response.map(task => {
           if (task.user === null) {
-            return new Task(task._id, {username: ''}, task.title, task.status);
+            return new Task(task._id, {username: '', id: ''}, task.title, task.status);
           }
-          return new Task(task._id, {username: task.user.username}, task.title, task.status);
+          return new Task(task._id, {username: task.user.username, id: task.user._id}, task.title, task.status);
         });
       })
     );
@@ -28,6 +28,18 @@ export class TasksService {
 
   createTask(task: TaskData) {
     return this.http.post(environment.apiUrl + '/tasks', task);
+  }
+
+  editTask(data: { [key: string]: string | null }, taskId: string) {
+    let taskData;
+    if (data['user'] === '') {
+      taskData = {user: null};
+    } else if (data['user']) {
+      taskData = {user: data['user']};
+    } else {
+      taskData = {status: data['status']};
+    }
+    return this.http.put(environment.apiUrl + '/tasks/' + taskId, taskData);
   }
 
   fetchUsers() {
