@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Task } from '../../models/task.model';
 import { User } from '../../models/user.model';
-import { TasksService } from '../../services/tasks.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/types';
-import { fetchTasksRequest } from '../../store/tasks.actions';
+import { editTaskRequest, removeTaskRequest } from '../../store/tasks.actions';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-task',
@@ -14,34 +14,43 @@ import { fetchTasksRequest } from '../../store/tasks.actions';
 export class TaskComponent implements OnInit {
   @Input() task!: Task;
   @Input() users!: User[];
+  editLoading: Observable<boolean>;
+  editError: Observable<null | string>;
+  removeLoading: Observable<boolean>;
+  removeError: Observable<null | string>;
+  toBeDeletedTaskId = '';
+  toBeEditedTaskId = '';
+  currentAction = '';
 
-  constructor(private tasksService: TasksService, private store: Store<AppState>) {
+  constructor(private store: Store<AppState>) {
+    this.editLoading = this.store.select(state => state.tasks.editLoading);
+    this.editError = this.store.select(state => state.tasks.editError);
+    this.removeLoading = this.store.select(state => state.tasks.removeLoading);
+    this.removeError = this.store.select(state => state.tasks.removeError);
   }
 
   ngOnInit(): void {
   }
 
+  onChangeSettings(id: string,action: string, data: {[key: string]: string}) {
+    this.toBeEditedTaskId = id;
+    this.currentAction = action;
+    return data;
+  }
+
   onUserChange(userId: string) {
-    const userData = {
-      user: userId,
-    };
-    this.tasksService.editTask(userData, this.task.id).subscribe(() => {
-      this.store.dispatch(fetchTasksRequest());
-    });
+    const data = this.onChangeSettings(this.task.id, 'user', {user: userId});
+    this.store.dispatch(editTaskRequest({data, id: this.task.id}));
   }
 
   onStatusChange(status: string) {
-    const statusData = {
-      status,
-    };
-    this.tasksService.editTask(statusData, this.task.id).subscribe(() => {
-      this.store.dispatch(fetchTasksRequest());
-    });
+    const data = this.onChangeSettings(this.task.id, 'status', {status});
+    this.store.dispatch(editTaskRequest({data, id: this.task.id}));
   }
 
   removeTask() {
-    this.tasksService.removeTask(this.task.id).subscribe(() => {
-      this.store.dispatch(fetchTasksRequest());
-    });
+    this.toBeDeletedTaskId = this.task.id;
+    this.store.dispatch(removeTaskRequest({id: this.task.id}));
   }
+
 }

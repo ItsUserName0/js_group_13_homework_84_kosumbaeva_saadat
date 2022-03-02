@@ -1,22 +1,43 @@
+<div class="error" *ngIf="(removeError | async) && task.id === toBeDeletedTaskId">
+  {{ removeError | async }}
+</div>
+
 <mat-card>
   <mat-card-content fxLayout="row" fxLayoutAlign="space-between center">
     <span fxFlex="10%"><strong>Task:</strong></span>
     <span fxFlex="25%">{{ task.title }}</span>
-    <mat-form-field appearance="outline" fxFlex="25%">
-      <mat-select [value]="task.user.id" (valueChange)="onUserChange($event)">
-        <mat-option [value]="''">N/A</mat-option>
-        <mat-option *ngFor="let u of users" [value]="u.id">{{ u.username }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field appearance="outline" fxFlex="25%">
-      <mat-select [value]="task.status" (valueChange)="onStatusChange($event)">
-        <mat-option [value]="'new'">New</mat-option>
-        <mat-option [value]="'in_progress'">In progress</mat-option>
-        <mat-option [value]="'completed'">Completed</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <button mat-raised-button color="warn" (click)="removeTask()" fxFlex="10%">
-      <mat-icon>delete</mat-icon>
+    <div fxFlex="25%" fxLayout="row" fxLayoutAlign="center">
+      <mat-spinner
+        *ngIf="(editLoading | async) && currentAction === 'user' && toBeEditedTaskId === task.id; else userFieldArea"
+        diameter="40"></mat-spinner>
+      <ng-template #userFieldArea>
+        <mat-form-field appearance="outline">
+          <mat-select [value]="task.user.id" (valueChange)="onUserChange($event)">
+            <mat-option [value]="''">N/A</mat-option>
+            <mat-option *ngFor="let u of users" [value]="u.id">{{ u.username }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-template>
+    </div>
+    <div fxFlex="25%" fxLayout="row" fxLayoutAlign="center">
+      <mat-spinner
+        *ngIf="(editLoading | async) && currentAction === 'status' && toBeEditedTaskId === task.id; else statusFieldArea"
+        diameter="40"></mat-spinner>
+      <ng-template #statusFieldArea>
+        <mat-form-field appearance="outline">
+          <mat-select [value]="task.status" (valueChange)="onStatusChange($event)">
+            <mat-option [value]="'new'">New</mat-option>
+            <mat-option [value]="'in_progress'">In progress</mat-option>
+            <mat-option [value]="'completed'">Completed</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-template>
+    </div>
+    <button mat-raised-button color="warn" (click)="removeTask()" fxFlex="10%" fxLayout="row" fxLayoutAlign="center">
+      <mat-icon *ngIf="!(removeLoading | async) && task.id !== toBeDeletedTaskId || task.id !== toBeDeletedTaskId">
+        delete
+      </mat-icon>
+      <mat-spinner *ngIf="(removeLoading | async) && task.id === toBeDeletedTaskId" diameter="40"></mat-spinner>
     </button>
   </mat-card-content>
 </mat-card>

@@ -1,4 +1,13 @@
 <h3>Create a new task</h3>
+
+<div class="error" *ngIf="createError | async">
+  {{ createError | async }}
+</div>
+
+<div class="error" *ngIf="usersError | async">
+  {{ usersError | async }}
+</div>
+
 <form #f=ngForm (ngSubmit)="onSubmit()">
   <div fxLayout="column">
     <div>
@@ -9,16 +18,20 @@
       </mat-form-field>
     </div>
     <div>
-      <mat-form-field appearance="outline">
-        <mat-label>Name</mat-label>
-        <select matNativeControl name="user" ngModel>
-          <option value="">N/A</option>
-          <option *ngFor="let u of users | async" [value]="u.id">{{ u.username }}</option>
-        </select>
-      </mat-form-field>
+      <mat-spinner *ngIf="usersLoading | async; else usersFieldArea" diameter="40"></mat-spinner>
+      <ng-template #usersFieldArea>
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <select matNativeControl name="user" ngModel>
+            <option value="">N/A</option>
+            <option *ngFor="let u of users | async" [value]="u.id">{{ u.username }}</option>
+          </select>
+        </mat-form-field>
+      </ng-template>
     </div>
     <div>
-      <button type="submit" mat-raised-button color="primary" [disabled]="f.invalid">Add</button>
+      <button type="submit" mat-raised-button color="primary" [disabled]="f.invalid || (createLoading | async)">Add
+      </button>
     </div>
   </div>
 </form>

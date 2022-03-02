@@ -1,1 +1,13 @@
-<app-task *ngFor="let t of tasks | async" [task]="t" [users]="usersList"></app-task>
+<div class="error" *ngIf="tasksError | async">
+  {{ tasksError | async }}
+</div>
+
+<div class="error" *ngIf="usersError | async">
+  {{ usersError | async }}
+</div>
+
+<mat-progress-spinner mode="indeterminate" *ngIf="tasksLoading | async; else tasksArea"></mat-progress-spinner>
+
+<ng-template #tasksArea>
+  <app-task *ngFor="let t of tasks | async" [task]="t" [users]="usersList"></app-task>
+</ng-template>
